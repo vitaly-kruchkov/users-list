@@ -44,7 +44,7 @@ const UsersPage = () => {
               setQuery("");
               setSkip(0);
             }}>
-            ×
+            x
           </button>
         )}
       </div>

@@ -20,8 +20,14 @@
 }
 
 .searchWrapper {
-  position: relative;
+  position: sticky;
+  top: 10px;
+  z-index: 5;
+
   margin-bottom: 24px;
+  padding-bottom: 8px;
+
+  backdrop-filter: blur(8px);
 }
 
 .search {
@@ -41,7 +47,7 @@
 
 .clearSearch {
   position: absolute;
-  top: 50%;
+  top: 40%;
   right: 10px;
   transform: translateY(-50%);
 
@@ -52,7 +58,7 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 999px;
+  border-radius: 100%;
   border: none;
   background: transparent;
 
