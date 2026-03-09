@@ -4,8 +4,14 @@ import UserCard from "@components/UserCard/UserCard";
 import Input from "@components/Input/Input";
 import { useUsers } from "@hooks/useUsers";
 import styles from "./Users.module.css";
+import { useSearchParams } from "react-router-dom";
 
 const UsersPage = () => {
+  const [params, setParams] = useSearchParams();
+
+  const page = Number(params.get("page") ?? 1);
+  const search = params.get("search") ?? "";
+
   const {
     users,
     total,
@@ -16,11 +22,38 @@ const UsersPage = () => {
     loading,
     limit,
     error,
-  } = useUsers();
+  } = useUsers(search, page);
 
   const from = total === 0 ? 0 : skip + 1;
   const to = Math.min(skip + limit, total);
   const isShowSummary = !loading && !error && total > 0;
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setParams({
+      page: "1",
+      search: e.target.value,
+    });
+
+    setQuery(e.target.value);
+    setSkip(0);
+  };
+
+  const handleClear = () => {
+    setParams({ page: "1" });
+    setQuery("");
+    setSkip(0);
+  };
+
+  const handlePageChange = (newSkip: number) => {
+    const newPage = newSkip / limit + 1;
+
+    setParams({
+      page: String(newPage),
+      ...(query && { search: query }),
+    });
+
+    setSkip(newSkip);
+  };
 
   return (
     <div className={styles.container}>
@@ -28,15 +61,9 @@ const UsersPage = () => {
 
       <Input
         value={query}
-        onChange={(e) => {
-          setQuery(e.target.value);
-          setSkip(0);
-        }}
+        onChange={handleSearch}
         showClear={Boolean(query)}
-        onClear={() => {
-          setQuery("");
-          setSkip(0);
-        }}
+        onClear={handleClear}
       />
 
       {isShowSummary && (
@@ -71,7 +98,7 @@ const UsersPage = () => {
             total={total}
             limit={limit}
             skip={skip}
-            onChange={setSkip}
+            onChange={handlePageChange}
           />
         </>
       )}
