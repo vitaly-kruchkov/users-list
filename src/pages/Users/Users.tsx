@@ -1,32 +1,84 @@
-import { useEffect, useState } from "react";
-import { getUsers } from "../../api/userApi";
-import type { User } from "../../types/user";
-
-const LIMIT = 10;
+import Pagination from "../../components/Pagination/Pagination";
+import Skeleton from "../../components/Skeleton/Skeleton";
+import UserCard from "../../components/UserCard/UserCard";
+import Input from "../../components/Input/Input";
+import { useUsers } from "../../hooks/useUsers";
+import styles from "./Users.module.css";
 
 const UsersPage = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [skip, setSkip] = useState(0);
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const data = await getUsers(LIMIT, skip);
-      setUsers(data.users);
-    };
-
-    fetchUsers();
-  }, [skip]);
+  const {
+    users,
+    total,
+    skip,
+    setSkip,
+    query,
+    setQuery,
+    loading,
+    limit,
+    error,
+  } = useUsers();
 
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Users</h1>
 
-      {users.map((user) => (
-        <div key={user.id}>
-          {user.firstName} {user.lastName}
+      <div className={styles.searchWrapper}>
+        <Input
+          className={styles.search}
+          type="text"
+          placeholder="Search users..."
+          aria-label="Search users"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setSkip(0);
+          }}
+        />
+
+        {query && (
+          <button
+            type="button"
+            className={styles.clearSearch}
+            aria-label="Clear search"
+            onClick={() => {
+              setQuery("");
+              setSkip(0);
+            }}>
+            ×
+          </button>
+        )}
+      </div>
+
+      {loading && (
+        <div className={styles.list}>
+          {Array.from({ length: limit }).map((_, i) => (
+            <Skeleton key={i} />
+          ))}
         </div>
-      ))}
+      )}
+
+      {error && <div className={styles.error}>{error}</div>}
+
+      {!loading && !error && users.length === 0 && (
+        <div className={styles.empty}>No users found</div>
+      )}
+
+      {!loading && !error && users.length > 0 && (
+        <>
+          <div className={styles.list}>
+            {users.map((user) => (
+              <UserCard key={user.id} user={user} />
+            ))}
+          </div>
+
+          <Pagination
+            total={total}
+            limit={limit}
+            skip={skip}
+            onChange={setSkip}
+          />
+        </>
+      )}
     </div>
   );
 };
