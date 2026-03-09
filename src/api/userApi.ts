@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { UserResponse } from "../types/user";
+import { type UserResponse } from "@models/user";
 
 const API = "https://dummyjson.com";
 
@@ -23,7 +23,7 @@ export const searchUsers = async (
   signal?: AbortSignal
 ): Promise<UserResponse> => {
   const { data } = await axios.get(`${API}/users/search`, {
-    params: { q: query },
+    params: { q: query, limit, skip },
     signal,
   });
 

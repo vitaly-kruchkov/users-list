@@ -1,8 +1,8 @@
-import Pagination from "../../components/Pagination/Pagination";
-import Skeleton from "../../components/Skeleton/Skeleton";
-import UserCard from "../../components/UserCard/UserCard";
-import Input from "../../components/Input/Input";
-import { useUsers } from "../../hooks/useUsers";
+import Pagination from "@components/Pagination/Pagination";
+import Skeleton from "@components/Skeleton/Skeleton";
+import UserCard from "@components/UserCard/UserCard";
+import Input from "@components/Input/Input";
+import { useUsers } from "@hooks/useUsers";
 import styles from "./Users.module.css";
 
 const UsersPage = () => {

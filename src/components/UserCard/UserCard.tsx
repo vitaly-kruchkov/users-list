@@ -1,5 +1,5 @@
 import styles from "./UserCard.module.css";
-import type { User } from "../../types/user";
+import type { User } from "@models/user";
 
 interface Props {
   user: User;
