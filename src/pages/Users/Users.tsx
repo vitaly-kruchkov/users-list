@@ -18,36 +18,32 @@ const UsersPage = () => {
     error,
   } = useUsers();
 
+  const from = total === 0 ? 0 : skip + 1;
+  const to = Math.min(skip + limit, total);
+  const isShowSummary = !loading && !error && total > 0;
+
   return (
     <div className={styles.container}>
-      <h1>Users</h1>
+      <h1 className={styles.header}>Users</h1>
 
-      <div className={styles.searchWrapper}>
-        <Input
-          className={styles.search}
-          type="text"
-          placeholder="Search users..."
-          aria-label="Search users"
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            setSkip(0);
-          }}
-        />
+      <Input
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setSkip(0);
+        }}
+        showClear={Boolean(query)}
+        onClear={() => {
+          setQuery("");
+          setSkip(0);
+        }}
+      />
 
-        {query && (
-          <button
-            type="button"
-            className={styles.clearSearch}
-            aria-label="Clear search"
-            onClick={() => {
-              setQuery("");
-              setSkip(0);
-            }}>
-            x
-          </button>
-        )}
-      </div>
+      {isShowSummary && (
+        <div className={styles.summary}>
+          Showing <b>{from}</b>–<b>{to}</b> of <b>{total}</b> users
+        </div>
+      )}
 
       {loading && (
         <div className={styles.list}>

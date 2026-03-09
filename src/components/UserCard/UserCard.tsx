@@ -1,11 +1,7 @@
 import styles from "./UserCard.module.css";
-import type { User } from "@models/user";
+import type { UserProps } from "./UserCard.types";
 
-interface Props {
-  user: User;
-}
-
-const UserCard = ({ user }: Props) => {
+const UserCard = ({ user }: UserProps) => {
   return (
     <div className={styles.card}>
       <img

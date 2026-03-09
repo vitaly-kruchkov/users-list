@@ -1,14 +1,8 @@
 import { useMemo } from "react";
 import styles from "./Pagination.module.css";
+import type { PaginationProps } from "./Pagination.types";
 
-interface Props {
-  total: number;
-  limit: number;
-  skip: number;
-  onChange: (skip: number) => void;
-}
-
-const Pagination = ({ total, limit, skip, onChange }: Props) => {
+const Pagination = ({ total, limit, skip, onChange }: PaginationProps) => {
   const currentPage = skip / limit + 1;
   const totalPages = Math.ceil(total / limit);
 

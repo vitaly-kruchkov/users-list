@@ -1,10 +1,27 @@
-import type { InputHTMLAttributes } from "react";
+import styles from "./Input.module.css";
+import type { InputProps } from "./Input.types";
 
-type InputProps = InputHTMLAttributes<HTMLInputElement>;
-
-const Input = (props: InputProps) => {
-  return <input {...props} />;
+const Input = ({ showClear, onClear, ...rest }: InputProps) => {
+  return (
+    <div className={styles.wrapper}>
+      <input
+        className={styles.input}
+        type="text"
+        placeholder="Search users..."
+        aria-label="Search users"
+        {...rest}
+      />
+      {showClear && onClear && (
+        <button
+          type="button"
+          className={styles.clear}
+          aria-label="Clear input"
+          onClick={onClear}>
+          ×
+        </button>
+      )}
+    </div>
+  );
 };
 
 export default Input;
-
